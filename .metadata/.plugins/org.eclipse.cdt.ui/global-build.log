@@ -1,0 +1,38 @@
+16:43:10 **** Incremental Build of configuration Debug for project SWEN563RTOSBankSim ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+In file included from ../Core/Src/main.c:29:
+../Core/Src/main.c: In function 'QueueHandler':
+../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h:395:96: warning: passing argument 2 of 'xQueueGenericSend' makes pointer from integer without a cast [-Wint-conversion]
+  395 | #define xQueueSendToBack( xQueue, pvItemToQueue, xTicksToWait ) xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), ( xTicksToWait ), queueSEND_TO_BACK )
+      |                                                                                                ^~~~~~~~~~~~~~~~~
+      |                                                                                                |
+      |                                                                                                int
+../Core/Src/main.c:346:17: note: in expansion of macro 'xQueueSendToBack'
+  346 |                 xQueueSendToBack(xCustomerQueue, 1, 1);
+      |                 ^~~~~~~~~~~~~~~~
+../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h:650:72: note: expected 'const void * const' but argument is of type 'int'
+  650 | BaseType_t xQueueGenericSend( QueueHandle_t xQueue, const void * const pvItemToQueue, TickType_t xTicksToWait, const BaseType_t xCopyPosition ) PRIVILEGED_FUNCTION;
+      |                                                     ~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~
+../Core/Src/main.c:347:17: warning: implicit declaration of function 'HAL_USART_Transmit'; did you mean 'HAL_UART_Transmit'? [-Wimplicit-function-declaration]
+  347 |                 HAL_USART_Transmit(&huart2, (unsigned char *) "Queued\r\n", 9, 0);
+      |                 ^~~~~~~~~~~~~~~~~~
+      |                 HAL_UART_Transmit
+arm-none-eabi-gcc -o "SWEN563RTOSBankSim.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\manou\Documents\rit\year4\fall\SWEN.563\bank\SWEN563RTOSBankSim\SWEN563RTOSBankSim\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SWEN563RTOSBankSim.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SWEN563RTOSBankSim.elf
+ 
+arm-none-eabi-size  SWEN563RTOSBankSim.elf 
+arm-none-eabi-objdump -h -S SWEN563RTOSBankSim.elf  > "SWEN563RTOSBankSim.list"
+   text	   data	    bss	    dec	    hex	filename
+  28592	     96	   8680	  37368	   91f8	SWEN563RTOSBankSim.elf
+Finished building: default.size.stdout
+ 
+Finished building: SWEN563RTOSBankSim.list
+ 
+16:47:30 **** Incremental Build of configuration Debug for project SWEN563RTOSBankSim ****
+make -j4 all 
+arm-none-eabi-size  SWEN563RTOSBankSim.elf 
+   text	   data	    bss	    dec	    hex	filename
+  28592	     96	   8680	  37368	   91f8	SWEN563RTOSBankSim.elf
+Finished building: default.size.stdout
+ 

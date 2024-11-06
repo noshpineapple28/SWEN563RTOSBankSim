@@ -1,0 +1,10 @@
+16:47:30 **** Incremental Build of configuration Debug for project SWEN563RTOSBankSim ****
+make -j4 all 
+arm-none-eabi-size  SWEN563RTOSBankSim.elf 
+   text	   data	    bss	    dec	    hex	filename
+  28592	     96	   8680	  37368	   91f8	SWEN563RTOSBankSim.elf
+Finished building: default.size.stdout
+ 
+
+16:47:31 Build Finished. 0 errors, 0 warnings. (took 1s.83ms)
+
