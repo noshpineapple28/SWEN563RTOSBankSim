@@ -1,0 +1,72 @@
+/*
+ * UART.c
+ *
+ *  Created on: Nov 6, 2024
+ *      Author: Noah
+ */
+
+static UART_HandleTypeDef uart2;
+
+static char BUFFER[100];
+
+/**
+ * prints a string out, and adds a new line
+ *
+ * @param str	a pointer to a string to print
+ *
+ * @return		the number of characters printed
+ */
+int puts (const char* str) {
+	int ret = sprintf (BUFFER, "%s\r\n", str);
+	HAL_UART_Transmit(&huart2, (unsigned char *) BUFFER, ret, 100);
+	return ret;
+}
+
+/**
+ * prints a specific number of characters
+ *
+ * @param str	a pointer to a string to print
+ * @param size	the number of characters from str to print
+ *
+ * @return		the number of characters printed
+ */
+int putns (const char* str, int size) {
+	int ret = snprintf (BUFFER, size + 1, "%s", str); // len of string plus \0
+	HAL_UART_Transmit(&huart2, (unsigned char *) BUFFER, ret, 100);
+	return ret + 2;
+}
+
+/**
+ * prints a given character to the console
+ *
+ * @param c	the value of a character to print out
+ *
+ * @return	the number of characters printed
+ */
+int putchar (int c) {
+	HAL_UART_Transmit(&huart2, (unsigned char *) c, 1, 100);
+	return 1;
+}
+
+/**
+ * prints a string out, and allows insertion of data values into formatted
+ * 		string
+ *
+ * @param format	a pointer to a string to print, along with format chars
+ * @param ...		data values to insert into format char positions
+ *
+ * @return		the number of characters printed
+ */
+int printf (const char* format, ...) {
+	// formats the string
+	va_list aptr;
+	va_start(aptr, format);
+	int ret = vsprintf(BUFFER, format, aptr);
+	va_end(aptr);
+
+	// writes to output
+	HAL_UART_Transmit(&huart2, (unsigned char *) BUFFER, ret, 100);
+
+	// return string length
+	return(ret);
+}

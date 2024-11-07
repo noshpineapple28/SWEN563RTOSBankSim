@@ -1,0 +1,10 @@
+23:25:44 **** Incremental Build of configuration Debug for project SWEN563BankDesktop ****
+make -j16 all 
+arm-none-eabi-size  SWEN563BankDesktop.elf 
+   text	   data	    bss	    dec	    hex	filename
+  32908	     96	  25840	  58844	   e5dc	SWEN563BankDesktop.elf
+Finished building: default.size.stdout
+ 
+
+23:25:45 Build Finished. 0 errors, 0 warnings. (took 514ms)
+

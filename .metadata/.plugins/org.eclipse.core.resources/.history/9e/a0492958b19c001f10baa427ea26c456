@@ -1,0 +1,20 @@
+/*
+ * UART.h
+ *
+ *  Created on: Nov 6, 2024
+ *      Author: Noah
+ */
+
+#ifndef INC_UART_H_
+#define INC_UART_H_
+
+
+
+/**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+void MX_USART2_UART_Init(void);
+
+#endif /* INC_UART_H_ */
