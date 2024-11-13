@@ -1,0 +1,13 @@
+/*
+ * Display.c
+ *
+ *  Created on: Nov 13, 2024
+ *      Author: Noah
+ */
+
+void set_display (uint8_t display_segment, uint8_t value)
+{
+	HAL_GPIO_WritePin(LATCH_GPIO_Port, LATCH_Pin, GPIO_PIN_RESET);
+	HAL_USART_Transmit(&husart1, tx, 2, 100);
+	HAL_GPIO_WritePin(LATCH_GPIO_Port, LATCH_Pin, GPIO_PIN_SET);
+}

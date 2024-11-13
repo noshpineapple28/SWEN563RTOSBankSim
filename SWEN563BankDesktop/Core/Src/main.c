@@ -72,6 +72,7 @@ osThreadAttr_t attr = {0};
  * 2 - break
  */
 uint8_t teller_states[] = {0, 0, 0};
+uint8_t teller_num_breaks[] = {0, 0, 0};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -300,6 +301,26 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
+  GPIO_InitStruct.Pin = S1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_NVIC_SetPriority(EXTI1_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(EXTI1_IRQn);
+
+  GPIO_InitStruct.Pin = S2_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_NVIC_SetPriority(EXTI4_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(EXTI4_IRQn);
+
+  GPIO_InitStruct.Pin = S3_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 /* USER CODE END MX_GPIO_Init_2 */
 }
 
@@ -318,17 +339,30 @@ void TellerTask (void *params)
 
 	while (1)
 	{
-		xSemaphoreTake(CustomerMutex, portMAX_DELAY);
+		// if teller on break, go on break!
+		if (teller_states[teller_id] == 2)
+		{
+			vTaskDelay(pdMS_TO_TICKS(SIM_MINUTE_TO_MILIS * 15));
+			teller_states[teller_id] = 0;
+		}
+
 		// take customer but, if none wait a minute
+		xSemaphoreTake(CustomerMutex, portMAX_DELAY);
 		if (xQueueReceive(CustomerQueue, &customer, portMAX_DELAY) == pdTRUE)
 		{
 			rnd = generate_random_number() % 16; // 30 secs to 8 mins, 30 sec intervals
 			xSemaphoreGive(CustomerMutex);
 			queue_count--;
-			teller_states[teller_id] = 1;
+			// if the teller is meant to be on break, wait to finish the current task
+			if (teller_states[teller_id] != 2)
+				teller_states[teller_id] = 1;
+
 			// 30 sec intervals
 			vTaskDelay(pdMS_TO_TICKS((SIM_MINUTE_TO_MILIS / 2) * (rnd + 1)));
-			teller_states[teller_id] = 0;
+
+			// reset the teller state as long as they aren't meant to be on break
+			if (teller_states[teller_id] != 2)
+				teller_states[teller_id] = 0;
 		}
 		else
 		{
@@ -372,30 +406,20 @@ void DisplayTask (void *params)
 		mins = minutes % 60;
 		hrs = (((minutes / 60) + 8) % 12) + 1;
 
-		printf("TIME: %02d:%02d\tIN QUEUE[%02d]\tTELLER STATUS? %d %d %d\r", hrs, mins, queue_count, teller_states[0], teller_states[1], teller_states[2]);
+		printf("TIME: %02d:%02d\tIN QUEUE[%02d]\tTELLER STATUS? %d %d %d\tNUM BREAKS PER TELLER %02d %02d %02d\r", hrs, mins, queue_count, teller_states[0], teller_states[1], teller_states[2], teller_num_breaks[0], teller_num_breaks[1], teller_num_breaks[2]);
 		vTaskDelay(pdMS_TO_TICKS(SIM_MINUTE_TO_MILIS));
 	}
+}
+
+void put_teller_on_break (uint8_t teller_id)
+{
+	teller_states[teller_id] = 2;
+	teller_num_breaks[teller_id]++;
 }
 
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartDefaultTask */
-/**
-  * @brief  Function implementing the defaultTask thread.
-  * @param  argument: Not used
-  * @retval None
-  */
-/* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument)
-{
-  /* USER CODE BEGIN 5 */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END 5 */
-}
 
 /**
   * @brief  Period elapsed callback in non blocking mode

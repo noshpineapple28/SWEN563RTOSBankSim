@@ -1,10 +1,17 @@
-23:25:44 **** Incremental Build of configuration Debug for project SWEN563BankDesktop ****
+23:22:22 **** Incremental Build of configuration Debug for project SWEN563BankDesktop ****
 make -j16 all 
+arm-none-eabi-gcc "../Core/Src/stm32l4xx_it.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32l4xx_it.d" -MT"Core/Src/stm32l4xx_it.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32l4xx_it.o"
+arm-none-eabi-gcc -o "SWEN563BankDesktop.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\manou\OneDrive\Documents\rit\year4\swen.563\SWEN563RTOSBankSim\SWEN563BankDesktop\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SWEN563BankDesktop.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SWEN563BankDesktop.elf
+ 
 arm-none-eabi-size  SWEN563BankDesktop.elf 
+arm-none-eabi-objdump -h -S SWEN563BankDesktop.elf  > "SWEN563BankDesktop.list"
    text	   data	    bss	    dec	    hex	filename
-  32908	     96	  25840	  58844	   e5dc	SWEN563BankDesktop.elf
+  33460	     96	  25856	  59412	   e814	SWEN563BankDesktop.elf
 Finished building: default.size.stdout
  
+Finished building: SWEN563BankDesktop.list
+ 
 
-23:25:45 Build Finished. 0 errors, 0 warnings. (took 514ms)
+23:22:23 Build Finished. 0 errors, 0 warnings. (took 1s.426ms)
 

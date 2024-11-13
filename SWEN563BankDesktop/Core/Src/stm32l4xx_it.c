@@ -22,6 +22,9 @@
 #include "stm32l4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "cmsis_os.h"
+#include "UART.h"
+#include "stdint.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -190,4 +193,73 @@ void USART2_IRQHandler(void)
 
 /* USER CODE BEGIN 1 */
 
+/**
+  * @brief This function handles EXTI line1 interrupt.
+  */
+void EXTI1_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI1_IRQn 0 */
+  static uint32_t last_click_tic = 0;
+  // convert to num of ms that has passed
+  uint32_t cur_tick = xTaskGetTickCount() / pdMS_TO_TICKS(1);
+
+  /* USER CODE END EXTI1_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(S1_Pin);
+  /* USER CODE BEGIN EXTI1_IRQn 1 */
+  // debounce
+  // if its been more than 10 ms, continue!
+  if (cur_tick - last_click_tic > 200)
+	  put_teller_on_break(0);
+
+  // set the last_click val
+  last_click_tic = cur_tick;
+  /* USER CODE END EXTI1_IRQn 1 */
+}
+
+/**
+  * @brief This function handles EXTI line2 interrupt.
+  */
+void EXTI4_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI4_IRQn 0 */
+  static uint32_t last_click_tic = 0;
+  // convert to num of ms that has passed
+  uint32_t cur_tick = xTaskGetTickCount() / pdMS_TO_TICKS(1);
+
+
+  /* USER CODE END EXTI4_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(S2_Pin);
+  /* USER CODE BEGIN EXTI4_IRQn 1 */
+  // debounce
+  // if its been more than 10 ms, continue!
+  if (cur_tick - last_click_tic > 200)
+	  put_teller_on_break(1);
+
+  // set the last_click val
+  last_click_tic = cur_tick;
+  /* USER CODE END EXTI4_IRQn 1 */
+}
+
+/**
+  * @brief This function handles EXTI line3 interrupt.
+  */
+void EXTI0_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI0_IRQn 0 */
+  static uint32_t last_click_tic = 0;
+  // convert to num of ms that has passed
+  uint32_t cur_tick = xTaskGetTickCount() / pdMS_TO_TICKS(1);
+
+  /* USER CODE END EXTI0_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(S3_Pin);
+  /* USER CODE BEGIN EXTI0_IRQn 1 */
+  // debounce
+  // if its been more than 10 ms, continue!
+  if (cur_tick - last_click_tic > 200)
+	  put_teller_on_break(2);
+
+  // set the last_click val
+  last_click_tic = cur_tick;
+  /* USER CODE END EXTI0_IRQn 1 */
+}
 /* USER CODE END 1 */

@@ -1,0 +1,11 @@
+/*
+ * Display.c
+ *
+ *  Created on: Nov 13, 2024
+ *      Author: Noah
+ */
+
+void set_display (uint8_t display_segment, uint8_t value)
+{
+
+}

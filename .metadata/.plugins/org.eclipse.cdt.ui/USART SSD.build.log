@@ -1,0 +1,21 @@
+01:33:12 **** Incremental Build of configuration Debug for project USART SSD ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:104:11: warning: unused variable 'tx' [-Wunused-variable]
+  104 |   uint8_t tx[] = {0x03, 0x2f};
+      |           ^~
+arm-none-eabi-gcc -o "USART SSD.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\manou\OneDrive\Documents\rit\year4\swen.563\SWEN563RTOSBankSim\USART SSD\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="USART SSD.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: USART SSD.elf
+ 
+arm-none-eabi-size  USART\ SSD.elf 
+arm-none-eabi-objdump -h -S USART\ SSD.elf  > "USART SSD.list"
+   text	   data	    bss	    dec	    hex	filename
+  14176	     12	   1788	  15976	   3e68	USART SSD.elf
+Finished building: default.size.stdout
+ 
+Finished building: USART SSD.list
+ 
+
+01:33:13 Build Finished. 0 errors, 1 warnings. (took 1s.69ms)
+
